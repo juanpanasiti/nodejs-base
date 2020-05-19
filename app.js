@@ -1,18 +1,18 @@
 const express = require('express')
 const app = express();
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 require('dotenv/config')
 
-//Middlewares
-/* app.use('/', () =>{
-    console.log('Middleware!');
-    return next()
-}) */
-
-
+app.use(bodyParser.json())
 //Import Routes
 const homeRoutes = require('./routes/home')
 app.use('/home', homeRoutes)
+
+const producsRoutes = require('./routes/products')
+app.use('/products', producsRoutes)
+
+
 //ROUTES
 app.get('/', (req,res) => {
     res.send("HOME")
