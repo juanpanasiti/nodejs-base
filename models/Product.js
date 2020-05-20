@@ -4,35 +4,38 @@ const ProductSchema = mongoose.Schema({
     //_id: Schema.Types.ObjectId,
     instrumento: {
         type: String,
-        required: true
+        //required: true
     },
     marca: {
         type: String,
-        required: true
+        //required: true
     },
     modelo: {
         type: String,
-        required: true
+        //required: true
     },
-    imagen: String,
+    imagenPath: { 
+        type: String,
+        //required: false
+    },
     precio: {
         type: mongoose.Schema.Types.Decimal128,
-        required: true,
+        //required: true,
         min: 0.0
     },
     costoEnvio: {
         type: mongoose.Schema.Types.Decimal128,
-        required: true,
+        //required: true,
         min: 0.0
     },
     cantidadVendida: {
         type: Number,
-        required: true,
+        //required: true,
         min: 0
     },
     descripcion: {
         type: String,
-        required: true
+        //required: true
     }
 
 })

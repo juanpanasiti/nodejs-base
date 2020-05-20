@@ -1,6 +1,33 @@
 const express = require('express')
 const router = express.Router()
 const Product = require('../models/Product')
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + file.originalname)
+    }
+})
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || 'image/png'){
+        cb(null, true)
+    } else {
+        cb(null, false)
+    }
+}
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024*1024*5
+    },
+    fileFilter: fileFilter
+})
+
+
 
 //GET ALL
 router.get('/', async (req, res) => {
@@ -13,20 +40,20 @@ router.get('/', async (req, res) => {
 })//Get_all
 
 //SUBMITS A PRODUCT
-router.post('/', async (req,res) => {
+router.post('/', upload.single('productImage'), async (req,res) => {
     try {
-        console.log(req.body)
+        console.log(req.file)
         const product = new Product({
             instrumento: req.body.instrumento,
             marca: req.body.marca,
             modelo: req.body.modelo,
-            imagen: req.body.imagen,
             precio: req.body.precio,
             costoEnvio: req.body.costoEnvio,
             cantidadVendida: req.body.cantidadVendida,
-            descripcion: req.body.descripcion
+            descripcion: req.body.descripcion,
+            imagenPath: req.file.path
         })
-        
+                
         const savedProd = await product.save()
         res.json(savedProd)
     } catch (err) {
